@@ -25,9 +25,9 @@ case "$mode" in
 		exit 1
 	fi
 	
+	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $location -o $DEFAULT_DTS
 	
-	java -jar /home/miago/sopc2dts/tools/sopc2dts.jar -i $location
-	
+
 	;;
 	"sof")
 	echo "program fpga"
