@@ -2,8 +2,10 @@
 
 
 mode="$1"
-DEFAULT_SOPCINFO="/home/miago/zhaw/BA/versions/lcd/fpga/linsoft.sopcinfo"
-DEFAULT_DTS="/home/miago/zhaw/BA/versions/lcd/linux/device.dts"
+DEFAULT_SOPCINFO="/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
+DEFAULT_DTS="/home/miago/zhaw/BA/project/linux/device.dts"
+DEFAULT_SOF_1="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
+DEFAULT_SOF_2="/home/miago/zhaw/BA/project/fpga/linsoft.sof"
 
 case "$mode" in
 	"dts")
@@ -31,6 +33,13 @@ case "$mode" in
 	;;
 	"sof")
 	echo "program fpga"
+	
+	if [ -a "$DEFAULT_SOF_1" ]; then
+		nios2-configure-sof $DEFAULT_SOF_1
+	
+	else 
+		nios2-configure-sof $DEFAULT_SOF_1
+	fi 
 	;;
 	"nios")
 	echo "program nios"
