@@ -33,11 +33,10 @@ case "$mode" in
 
 	;;
 	"sof")
-	echo "program fpga"
+	echo "Program SOF to Board"
 	
 	if [ -a "$DEFAULT_SOF_1" ]; then
-		nios2-configure-sof $DEFAULT_SOF_1
-	
+		nios2-configure-sof $DEFAULT_SOF_1	
 	else 
 		nios2-configure-sof $DEFAULT_SOF_1
 	fi 
