@@ -4,6 +4,7 @@
 mode="$1"
 DEFAULT_SOPCINFO="/home/miago/zhaw/BA/versions/lcd/fpga/linsoft.sopcinfo"
 DEFAULT_DTS="/home/miago/zhaw/BA/versions/lcd/linux/device.dts"
+DEFAULT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initram.gz"
 
 case "$mode" in
 	"dts")
@@ -34,6 +35,7 @@ case "$mode" in
 	;;
 	"nios")
 	echo "program nios"
+	nios2-download -g -r $DEFAULT_ZIM
 	;;
 esac
 
