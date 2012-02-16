@@ -10,7 +10,8 @@ DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
 DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
 
 if [ -z "$mode" ]; then
-	echo "no oop"
+	echo "chose between dts, sof,nios and status"
+	exit
 fi
 
 case "$mode" in
@@ -41,6 +42,8 @@ case "$mode" in
 	
 	"sof")
 	echo "Program SOF to Board"
+	
+	ncs
 	
 	if [ -a "$DEFAULT_SOF_1" ]; then
 		nios2-configure-sof $DEFAULT_SOF_1	
