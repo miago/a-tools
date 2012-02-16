@@ -52,6 +52,10 @@ case "$mode" in
 	
 	"nios")
 	echo "program nios"
+	
+	export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin:/home/miago/altera/11.1sp2/nios2eds/sdk2/bin
+	export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
+	
 	nios2-download -g -r $DEFAULT_ZIM
 	;;
 	
