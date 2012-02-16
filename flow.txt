@@ -1,0 +1,8 @@
+Qsys gen.
+Quartus synth.
+DTS gen.
+zImage gen.
+open Terminal
+configure sof
+download zImage
+
