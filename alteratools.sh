@@ -43,8 +43,6 @@ case "$mode" in
 	"sof")
 	echo "Program SOF to Board"
 	
-	ncs
-	
 	if [ -a "$DEFAULT_SOF_1" ]; then
 		nios2-configure-sof $DEFAULT_SOF_1	
 	else 
@@ -100,9 +98,9 @@ case "$mode" in
 	;;
 	"flow")
 		#Qsys
-		echo "did you change QSYS project? [Y/n]"
+		echo "did you change QSYS project? [y/N]"
 		read ans
-		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+		if ([ "$ans" == 'y' ]); then
 			/home/miago/altera/11.1sp1/quartus/sopc_builder/bin/qsys-edit "/home/miago/zhaw/BA/project/fpga/linsoft.qsys" && exit
 		else
 			#check for file sopcinfo
@@ -115,9 +113,9 @@ case "$mode" in
 		fi
 		
 		#Quartus
-		echo "did you change something in the QUARTUS project? [Y/n]"
+		echo "did you change something in the QUARTUS project? [y/N]"
 		read ans
-		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+		if ([ "$ans" == 'y' ]); then
 			quartus "/home/miago/zhaw/BA/project/fpga/linsoft.qpf" && exit
 		else
 			#check for file top file
@@ -130,9 +128,9 @@ case "$mode" in
 		fi	
 		
 		#Dts file
-		echo "does the DTS file need to be updated? [Y/n]"
+		echo "does the DTS file need to be updated? [y/N]"
 		read ans
-		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+		if ([ "$ans" == 'y' ]); then
 			java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $DEFAULT_SOPCINFO -o $DEFAULT_DTS && exit
 		else
 			#check for dts file
@@ -144,10 +142,13 @@ case "$mode" in
 			fi
 		fi
 		
+		#meld
+		
+		
 		#ZIMAGE file
-		echo "does the KERNEL need to be rebuilt? [Y/n]"
+		echo "does the KERNEL need to be rebuilt? [y/N]"
 		read ans
-		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+		if ([ "$ans" == 'y' ]); then
 			cd ~/nios2-linux/uClinux-dist && make menuconfig
 		else
 			#check for project zimage file
@@ -174,8 +175,21 @@ case "$mode" in
 			gnome-terminal -e "bash -c \"minicom; exec bash\""&
 		fi
 		
+		#configure sof
+		echo "do you want me to open a new terminal to configure the sof? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			gnome-terminal -e "bash -c \"nios2-configure-sof /home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof; exec bash\""&
+		fi
 		
-			
+		#download kernel
+		echo "do you want me to download the kernel? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin:/home/miago/altera/11.1sp2/nios2eds/sdk2/bin
+			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
+			nios2-download -g -r /home/miago/zhaw/BA/project/linux/zImage.initramfs.gz
+		fi		
 	;;
 esac
 
