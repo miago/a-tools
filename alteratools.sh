@@ -10,7 +10,7 @@ DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
 DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
 
 if [ -z "$mode" ]; then
-	echo "chose between dts, sof,nios and status"
+	echo "chose between dts, sof,nios and status,flow"
 	exit
 fi
 
@@ -96,6 +96,86 @@ case "$mode" in
 		echo "direct zim file does not exist <------------"
 	fi
 	echo "--------------------------------------------"
+	
+	;;
+	"flow")
+		#Qsys
+		echo "did you change QSYS project? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			/home/miago/altera/11.1sp1/quartus/sopc_builder/bin/qsys-edit "/home/miago/zhaw/BA/project/fpga/linsoft.qsys" && exit
+		else
+			#check for file sopcinfo
+			if [ -a "$DEFAULT_SOPCINFO" ]; then
+				echo "sopcinfo file last edited at:"
+				stat -c %z $DEFAULT_SOPCINFO
+			else
+				echo "WARNING: sopcinfo file does not exist"
+			fi
+		fi
+		
+		#Quartus
+		echo "did you change something in the QUARTUS project? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			quartus "/home/miago/zhaw/BA/project/fpga/linsoft.qpf" && exit
+		else
+			#check for file top file
+			if [ -a "/home/miago/zhaw/BA/project/fpga/top.v" ]; then
+				echo "top file last edited at:"
+				stat -c %z /home/miago/zhaw/BA/project/fpga/top.v
+			else
+				echo "WARNING: top file does not exist"
+			fi
+		fi	
+		
+		#Dts file
+		echo "does the DTS file need to be updated? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $DEFAULT_SOPCINFO -o $DEFAULT_DTS && exit
+		else
+			#check for dts file
+			if [ -a "$DEFAULT_DTS" ]; then
+				echo "dts file last edited at:"
+				stat -c %z $DEFAULT_DTS
+			else
+				echo "WARNING: dts file does not exist"
+			fi
+		fi
+		
+		#ZIMAGE file
+		echo "does the KERNEL need to be rebuilt? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			cd ~/nios2-linux/uClinux-dist && make menuconfig
+		else
+			#check for project zimage file
+			if [ -a "$DEFAULT_PROJECT_ZIM" ]; then
+				echo "Project zImage edited at:"
+				stat -c %z $DEFAULT_PROJECT_ZIM
+			else
+				echo "WARNING: Project zImage does not exist"
+			fi
+			
+			#check for direct zimage file
+			if [ -a "$DEFAULT_DIRECT_ZIM" ]; then
+				echo "Direct zImage edited at:"
+				stat -c %z $DEFAULT_DIRECT_ZIM
+			else
+				echo "WARNING: Direct zImage does not exist"
+			fi
+		fi
+		
+		#serial console
+		echo "do you want me to open a minicom console for you? [Y/n]"
+		read ans
+		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
+			gnome-terminal -e "bash -c \"minicom; exec bash\""&
+		fi
+		
+		
+			
 	;;
 esac
 
