@@ -60,39 +60,38 @@ case "$mode" in
 	#sof
 	if [ -a "$DEFAULT_SOF_1" ]; then
 		echo "sof file last edited at:"
-		stat -c %y $DEFAULT_SOF_1
+		stat -c %z $DEFAULT_SOF_1
 	else
 		echo "sof file does not exist <-------------------"
 	fi
 	#sopcinfo
 	if [ -a "$DEFAULT_SOPCINFO" ]; then
 		echo "sopcinfo file last edited at:"
-		stat -c %y $DEFAULT_SOPCINFO
+		stat -c %z $DEFAULT_SOPCINFO
 	else
 		echo "sopcinfo file does not exist <--------------"
 	fi
 	#dts
 	if [ -a "$DEFAULT_DTS" ]; then
 		echo "dts file last edited at:"
-		stat -c %y $DEFAULT_DTS
+		stat -c %z $DEFAULT_DTS
 	else
 		echo "dts file does not exist <-------------------"
 	fi
 	#zImage project
 	if [ -a "$DEFAULT_PROJECT_ZIM" ]; then
 		echo "zImage project"
-		stat -c %y $DEFAULT_PROJECT_ZIM
+		stat -c %z $DEFAULT_PROJECT_ZIM
 	else
 		echo "project zim file does not exist <-----------"
 	fi
 	#zImage direct
 	if [ -a "$DEFAULT_DIRECT_ZIM" ]; then
 		echo "zImage direct"
-		stat -c %y $DEFAULT_DIRECT_ZIM
+		stat -c %z $DEFAULT_DIRECT_ZIM
 	else
 		echo "direct zim file does not exist <------------"
 	fi
-	
 	echo "--------------------------------------------"
 	;;
 esac
