@@ -34,8 +34,10 @@ case "$mode" in
 	
 	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $location -o $DEFAULT_DTS
 	
+	meld /home/miago/zhaw/BA/project/linux/device.dts /home/miago/zhaw/BA/project/linux/mod_device.dt
 
 	;;
+	
 	"sof")
 	echo "Program SOF to Board"
 	
@@ -45,9 +47,22 @@ case "$mode" in
 		nios2-configure-sof $DEFAULT_SOF_1
 	fi 
 	;;
+	
 	"nios")
 	echo "program nios"
 	nios2-download -g -r $DEFAULT_ZIM
+	;;
+	
+	"status")
+	echo "file status" 
+	echo "SOF" 
+	stat -c %y $DEFAULT_SOF_1
+	echo "SOPCINFO"
+	stat -c %y $DEFAULT_SOPCINFO
+	echo "DTS"
+	stat -c %y $DEFAULT_DTS
+	echo "zImage"
+	stat -c %y $DEFAULT_ZIM
 	;;
 esac
 
