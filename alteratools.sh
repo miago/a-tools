@@ -6,7 +6,8 @@ DEFAULT_SOPCINFO="/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
 DEFAULT_DTS="/home/miago/zhaw/BA/project/linux/device.dts"
 DEFAULT_SOF_1="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
 DEFAULT_SOF_2="/home/miago/zhaw/BA/project/fpga/linsoft.sof"
-DEFAULT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
+DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
+DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
 
 if [ -z "$mode" ]; then
 	echo "no oop"
@@ -54,15 +55,45 @@ case "$mode" in
 	;;
 	
 	"status")
-	echo "file status" 
-	echo "SOF" 
-	stat -c %y $DEFAULT_SOF_1
-	echo "SOPCINFO"
-	stat -c %y $DEFAULT_SOPCINFO
-	echo "DTS"
-	stat -c %y $DEFAULT_DTS
-	echo "zImage"
-	stat -c %y $DEFAULT_ZIM
+	echo "                file status" 
+	echo "--------------------------------------------" 
+	#sof
+	if [ -a "$DEFAULT_SOF_1" ]; then
+		echo "sof file last edited at:"
+		stat -c %y $DEFAULT_SOF_1
+	else
+		echo "sof file does not exist <-------------------"
+	fi
+	#sopcinfo
+	if [ -a "$DEFAULT_SOPCINFO" ]; then
+		echo "sopcinfo file last edited at:"
+		stat -c %y $DEFAULT_SOPCINFO
+	else
+		echo "sopcinfo file does not exist <--------------"
+	fi
+	#dts
+	if [ -a "$DEFAULT_DTS" ]; then
+		echo "dts file last edited at:"
+		stat -c %y $DEFAULT_DTS
+	else
+		echo "dts file does not exist <-------------------"
+	fi
+	#zImage project
+	if [ -a "$DEFAULT_PROJECT_ZIM" ]; then
+		echo "zImage project"
+		stat -c %y $DEFAULT_PROJECT_ZIM
+	else
+		echo "project zim file does not exist <-----------"
+	fi
+	#zImage direct
+	if [ -a "$DEFAULT_DIRECT_ZIM" ]; then
+		echo "zImage direct"
+		stat -c %y $DEFAULT_DIRECT_ZIM
+	else
+		echo "direct zim file does not exist <------------"
+	fi
+	
+	echo "--------------------------------------------"
 	;;
 esac
 
