@@ -8,6 +8,10 @@ DEFAULT_SOF_1="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
 DEFAULT_SOF_2="/home/miago/zhaw/BA/project/fpga/linsoft.sof"
 DEFAULT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initram.gz"
 
+if [ -z "$mode" ]; then
+	echo "no oop"
+fi
+
 case "$mode" in
 	"dts")
 	echo "dts generation tool with sopc2dts"
