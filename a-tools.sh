@@ -4,10 +4,11 @@
 mode="$1"
 DEFAULT_SOPCINFO="/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
 DEFAULT_DTS="/home/miago/zhaw/BA/project/linux/device.dts"
-DEFAULT_SOF_1="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
-DEFAULT_SOF_2="/home/miago/zhaw/BA/project/fpga/linsoft.sof"
+DEFAULT_SOF="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
 DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
 DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
+QSYS_LOCATION="/home/miago/zhaw/BA/project/fpga/linsoft.qsys"
+QPF_LOCATION="/home/miago/zhaw/BA/project/fpga/linsoft.qpf"
 
 #Banner
 echo " _______       _______ _______ _______ _____   _______ "
@@ -46,16 +47,16 @@ case "$mode" in
 	"sof")
 	echo "Program SOF to Board"
 	
-	if [ -a "$DEFAULT_SOF_1" ]; then
-		nios2-configure-sof $DEFAULT_SOF_1	
+	if [ -a "$DEFAULT_SOF" ]; then
+		nios2-configure-sof $DEFAULT_SOF	
 	else 
-		nios2-configure-sof $DEFAULT_SOF_1
+		nios2-configure-sof $DEFAULT_SOF
 	fi 
 	;;
 	
 	"nios")
 	echo "program nios"
-	
+	#Don't know if it works correctly	
 	export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin:/home/miago/altera/11.1sp2/nios2eds/sdk2/bin
 	export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
 	
@@ -66,9 +67,9 @@ case "$mode" in
 	echo "                file status" 
 	echo "--------------------------------------------" 
 	#sof
-	if [ -a "$DEFAULT_SOF_1" ]; then
+	if [ -a "$DEFAULT_SOF" ]; then
 		echo "sof file last edited at:"
-		stat -c %z $DEFAULT_SOF_1
+		stat -c %z $DEFAULT_SOF
 	else
 		echo "sof file does not exist <-------------------"
 	fi
@@ -108,7 +109,7 @@ case "$mode" in
 		echo "did you change QSYS project? [y/N]"
 		read ans
 		if ([ "$ans" == 'y' ]); then
-			/home/miago/altera/11.1sp1/quartus/sopc_builder/bin/qsys-edit "/home/miago/zhaw/BA/project/fpga/linsoft.qsys" && exit
+			/home/miago/altera/11.1sp1/quartus/sopc_builder/bin/qsys-edit "$QSYS_LOCATION" && exit
 		else
 			#check for file sopcinfo
 			if [ -a "$DEFAULT_SOPCINFO" ]; then
@@ -123,7 +124,7 @@ case "$mode" in
 		echo "did you change something in the QUARTUS project? [y/N]"
 		read ans
 		if ([ "$ans" == 'y' ]); then
-			quartus "/home/miago/zhaw/BA/project/fpga/linsoft.qpf" && exit
+			quartus "$QOF_LOCATION" && exit
 		else
 			#check for file top file
 			if [ -a "/home/miago/zhaw/BA/project/fpga/top.v" ]; then
@@ -186,16 +187,16 @@ case "$mode" in
 		echo "do you want me to open a new terminal to configure the sof? [Y/n]"
 		read ans
 		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
-			gnome-terminal -e "bash -c \"nios2-configure-sof /home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof; exec bash\""&
+			gnome-terminal -e "bash -c \"nios2-configure-sof $DEFAULT_SOF; exec bash\""&
 		fi
-		
+	
 		#download kernel
 		echo "do you want me to download the kernel? [Y/n]"
 		read ans
 		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
 			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin:/home/miago/altera/11.1sp2/nios2eds/sdk2/bin
 			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
-			nios2-download -g -r /home/miago/zhaw/BA/project/linux/zImage.initramfs.gz
+			nios2-download -g -r $DEFAULT_PROJECT_ZIM 
 		fi		
 	;;
 	*)
