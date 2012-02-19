@@ -17,11 +17,6 @@ echo "|___|___|       |___| |_______|_______|_______|_______|"
 
 
 
-if [ -z "$mode" ]; then
-	echo "chose between dts, sof,nios and status,flow"
-	exit
-fi
-
 case "$mode" in
 	"dts")
 	echo "dts generation tool with sopc2dts"
@@ -202,6 +197,14 @@ case "$mode" in
 			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
 			nios2-download -g -r /home/miago/zhaw/BA/project/linux/zImage.initramfs.gz
 		fi		
+	;;
+	*)
+	echo "valid arguments:"
+        echo "dts: generate new dts file end open meld"
+        echo "sof: program sof"
+        echo "nios: download software to nios2"
+        echo "status: display status of several files"
+        echo "flow: guide to all required steps"
 	;;
 esac
 
