@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 mode="$1"
 DEFAULT_SOPCINFO="/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
 DEFAULT_DTS="/home/miago/zhaw/BA/project/linux/device.dts"
@@ -14,8 +13,6 @@ echo " _______       _______ _______ _______ _____   _______ "
 echo "|   _   |_____|_     _|       |       |     |_|     __|"
 echo "|       |______||   | |   -   |   -   |       |__     |"
 echo "|___|___|       |___| |_______|_______|_______|_______|"
-
-
 
 case "$mode" in
 	"dts")
@@ -39,7 +36,7 @@ case "$mode" in
 	
 	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $location -o $DEFAULT_DTS
 	
-	meld /home/miago/zhaw/BA/project/linux/device.dts /home/miago/zhaw/BA/project/linux/mod_device.dts
+	meld $DEFAULT_DTS  /home/miago/zhaw/BA/project/linux/mod_device.dts
 
 	;;
 	
