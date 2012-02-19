@@ -37,7 +37,7 @@ case "$mode" in
 	
 	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $location -o $DEFAULT_DTS
 	
-	meld $DEFAULT_DTS  /home/miago/zhaw/BA/project/linux/mod_device.dts
+	meld $DEFAULT_DTS /home/miago/zhaw/BA/project/linux/mod_device.dts
 
 	;;
 	
