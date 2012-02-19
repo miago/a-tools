@@ -9,6 +9,14 @@ DEFAULT_SOF_2="/home/miago/zhaw/BA/project/fpga/linsoft.sof"
 DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
 DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
 
+#Banner
+echo " _______       _______ _______ _______ _____   _______ "
+echo "|   _   |_____|_     _|       |       |     |_|     __|"
+echo "|       |______||   | |   -   |   -   |       |__     |"
+echo "|___|___|       |___| |_______|_______|_______|_______|"
+
+
+
 if [ -z "$mode" ]; then
 	echo "chose between dts, sof,nios and status,flow"
 	exit
