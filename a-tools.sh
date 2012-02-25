@@ -2,7 +2,7 @@
 
 mode="$1"
 BASEL="/home/miago/nios2-linux/uClinux-dist"
-SOPCINFOL="${BASEL}/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
+SOPCINFOL="${BASEL}/fpga/linsoft.sopcinfo"
 DTSL="${BASEL}/linux/device.dts"
 SOFL="${BASEL}fpga/linsoft_time_limited.sof"
 ZIMAGEL="${BASEL}/images/zImage.initramfs.gz"
