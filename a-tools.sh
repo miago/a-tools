@@ -1,13 +1,14 @@
 #!/bin/bash
 
 mode="$1"
-DEFAULT_SOPCINFO="/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
-DEFAULT_DTS="/home/miago/zhaw/BA/project/linux/device.dts"
-DEFAULT_SOF="/home/miago/zhaw/BA/project/fpga/linsoft_time_limited.sof"
-DEFAULT_PROJECT_ZIM="/home/miago/zhaw/BA/project/linux/zImage.initramfs.gz"
-DEFAULT_DIRECT_ZIM="/home/miago/nios2-linux/uClinux-dist/images/zImage.initramfs.gz"
-QSYS_LOCATION="/home/miago/zhaw/BA/project/fpga/linsoft.qsys"
-QPF_LOCATION="/home/miago/zhaw/BA/project/fpga/linsoft.qpf"
+BASEL="/home/miago/nios2-linux/uClinux-dist"
+SOPCINFOL="${BASEL}/home/miago/zhaw/BA/project/fpga/linsoft.sopcinfo"
+DTSL="${BASEL}/linux/device.dts"
+SOFL="${BASEL}fpga/linsoft_time_limited.sof"
+ZIMAGEL="${BASEL}/images/zImage.initramfs.gz"
+QSYSL="${BASEL}/fpga/linsoft.qsys"
+QPFL="${BASEL}/fpga/linsoft.qpf"
+TOPL="${BASEL}/fpga/top.v"
 
 #Banner
 echo " _______       _______ _______ _______ _____   _______ "
@@ -106,12 +107,12 @@ case "$mode" in
 		echo "did you change QSYS project? [y/N]"
 		read ans
 		if ([ "$ans" == 'y' ]); then
-			/home/miago/altera/11.1sp1/quartus/sopc_builder/bin/qsys-edit "$QSYS_LOCATION" && exit
+			/home/miago/altera/11.1sp2/quartus/sopc_builder/bin/qsys-edit "$QSYSL" && exit
 		else
 			#check for file sopcinfo
-			if [ -a "$DEFAULT_SOPCINFO" ]; then
+			if [ -a "$SOPCINFOL" ]; then
 				echo "sopcinfo file last edited at:"
-				stat -c %z $DEFAULT_SOPCINFO
+				stat -c %z $SOPCINFOL
 			else
 				echo "WARNING: sopcinfo file does not exist"
 			fi
@@ -121,12 +122,12 @@ case "$mode" in
 		echo "did you change something in the QUARTUS project? [y/N]"
 		read ans
 		if ([ "$ans" == 'y' ]); then
-			quartus "$QOF_LOCATION" && exit
+			quartus "$QPFL" && exit
 		else
 			#check for file top file
-			if [ -a "/home/miago/zhaw/BA/project/fpga/top.v" ]; then
+			if [ -a "$TOPL" ]; then
 				echo "top file last edited at:"
-				stat -c %z /home/miago/zhaw/BA/project/fpga/top.v
+				stat -c %z $TOPL
 			else
 				echo "WARNING: top file does not exist"
 			fi
@@ -136,12 +137,12 @@ case "$mode" in
 		echo "does the DTS file need to be updated? [y/N]"
 		read ans
 		if ([ "$ans" == 'y' ]); then
-			java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $DEFAULT_SOPCINFO -o $DEFAULT_DTS && exit
+			java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $SOPCINFOL -o $DTSL && exit
 		else
 			#check for dts file
-			if [ -a "$DEFAULT_DTS" ]; then
+			if [ -a "$DTSL" ]; then
 				echo "dts file last edited at:"
-				stat -c %z $DEFAULT_DTS
+				stat -c %z $DTSL
 			else
 				echo "WARNING: dts file does not exist"
 			fi
@@ -157,19 +158,11 @@ case "$mode" in
 			cd ~/nios2-linux/uClinux-dist && make menuconfig
 		else
 			#check for project zimage file
-			if [ -a "$DEFAULT_PROJECT_ZIM" ]; then
+			if [ -a "$ZIMAGEL" ]; then
 				echo "Project zImage edited at:"
-				stat -c %z $DEFAULT_PROJECT_ZIM
+				stat -c %z $ZIMAGEL
 			else
 				echo "WARNING: Project zImage does not exist"
-			fi
-			
-			#check for direct zimage file
-			if [ -a "$DEFAULT_DIRECT_ZIM" ]; then
-				echo "Direct zImage edited at:"
-				stat -c %z $DEFAULT_DIRECT_ZIM
-			else
-				echo "WARNING: Direct zImage does not exist"
 			fi
 		fi
 		
@@ -184,16 +177,14 @@ case "$mode" in
 		echo "do you want me to open a new terminal to configure the sof? [Y/n]"
 		read ans
 		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
-			gnome-terminal -e "bash -c \"nios2-configure-sof $DEFAULT_SOF; exec bash\""&
+			gnome-terminal -e "bash -c \"nios2-configure-sof $SOFL; exec bash\""&
 		fi
 	
 		#download kernel
 		echo "do you want me to download the kernel? [Y/n]"
 		read ans
 		if ([ -z "$ans" ] || [ "$ans" == 'y' ]); then
-			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin:/home/miago/altera/11.1sp2/nios2eds/sdk2/bin
-			export PATH=$PATH:/home/miago/altera/11.1sp2/nios2eds/bin/gnu/H-i686-pc-linux-gnu/bin
-			nios2-download -g -r $DEFAULT_PROJECT_ZIM 
+			nios2-download -g -r $ZIMAGEL 
 		fi		
 	;;
 	*)
