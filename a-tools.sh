@@ -19,26 +19,15 @@ echo "|___|___|       |___| |_______|_______|_______|_______|"
 case "$mode" in
 	"dts")
 	echo "dts generation tool with sopc2dts"
-	echo "sopcinfo file (default $DEFAULT_SOPCINFO): "
-	read location
-	
-	if [ -z "$location" ]; then
-		echo "assume default location $DEFAULT_SOPCINFO"
-		location=$DEFAULT_SOPCINFO
-	else
-		echo "use provided location $location"
-	fi
-	
-	if [ -a "$location" ]; then
-		echo "$location does exist"
+
+	if [ -a "$SOPCINFOL" ]; then
+		echo "$SOPCINFOL does exist"
 	else 
-		echo "$location does not exist"
+		echo "$SOPCINFOL does not exist"
 		exit 1
 	fi
 	
-	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $location -o $DEFAULT_DTS
-	
-	meld $DEFAULT_DTS /home/miago/zhaw/BA/project/linux/mod_device.dts
+	java -jar /home/miago/sopc2dts/tools/sopc2dts/sopc2dts.jar -i $SOPCINFOL -o $DTSL
 
 	;;
 	
