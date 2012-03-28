@@ -190,6 +190,15 @@ case "$mode" in
 	
 	;;
 	
+	"quartus")
+	
+		echo "OPEN QUARTUS PROJECT"
+		
+		quartus $QPFL
+		
+	
+	;;
+	
 	*)
 	echo "valid arguments:"
         echo "dts: generate new dts file end open meld"
