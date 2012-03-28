@@ -4,6 +4,7 @@ mode="$1"
 BASEL="/home/miago/nios2-linux/uClinux-dist"
 SOPCINFOL="${BASEL}/fpga/linsoft.sopcinfo"
 DTSL="${BASEL}/dts/device.dts"
+MDTSL="${BASEL}/dts/mod_device.dts"
 SOFL="${BASEL}/fpga/linsoft_time_limited.sof"
 ZIMAGEL="${BASEL}/images/zImage.initramfs.gz"
 QSYSL="${BASEL}/fpga/linsoft.qsys"
@@ -176,6 +177,19 @@ case "$mode" in
 			nios2-download -g -r $ZIMAGEL 
 		fi		
 	;;
+	"backup")
+	
+	;;
+	
+	"meld")
+	
+		echo "MELD DTS FILES"
+		
+		meld $DTSL $MDTSL
+		
+	
+	;;
+	
 	*)
 	echo "valid arguments:"
         echo "dts: generate new dts file end open meld"
