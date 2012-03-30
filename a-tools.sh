@@ -9,7 +9,10 @@ SOFL="${BASEL}/fpga/linsoft_time_limited.sof"
 ZIMAGEL="${BASEL}/images/zImage.initramfs.gz"
 QSYSL="${BASEL}/fpga/linsoft.qsys"
 QPFL="${BASEL}/fpga/linsoft.qpf"
+QSFL="${BASEL}/fpga/linsoft.qsf"
 TOPL="${BASEL}/fpga/top.v"
+NIOSHL="${BASEL}/../linux-2.6/arch/nios2/include/asm/nios.h"
+CONFL="${BASEL}/linux-2.6.x/.config"
 
 #Banner
 echo " _______       _______ _______ _______ _____   _______ "
@@ -178,7 +181,8 @@ case "$mode" in
 		fi		
 	;;
 	"backup")
-	
+		#creates a zip file w the most important files
+		tar zcvf backup.tar.gz $DTSL $SOPCINFOL $TOPL $NIOSHL $CONFL $QPFL $QSFL 
 	;;
 	
 	"meld")
